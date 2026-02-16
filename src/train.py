@@ -52,9 +52,9 @@ def main():
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs)
     
     # 4. Training
-    # Create experiment directory
-    experiment_dir = os.path.join("experiments", args.experiment_name)
-    os.makedirs(experiment_dir, exist_ok=True)
+    # Create results directory for this experiment
+    results_dir = os.path.join("results", args.experiment_name)
+    os.makedirs(results_dir, exist_ok=True)
     
     # 4. Training
     print(f"Starting training for {args.epochs} epochs...")
@@ -65,7 +65,7 @@ def main():
         loss_fn=loss_fn,
         optimizer=optimizer,
         scheduler=scheduler,
-        output_path=os.path.join(experiment_dir, "model.pth"),
+        output_path=os.path.join(results_dir, "model.pth"),
         epochs=args.epochs,
         device=device,
         early_stopping_patience=5
@@ -73,10 +73,10 @@ def main():
     
     # 5. Metrics & Plotting
     print("Generating loss curves...")
-    utils.plot_loss_curves(results)
+    utils.plot_loss_curves(results, save_dir=results_dir)
     
     print("Computing confusion matrix...")
-    utils.compute_confusion_matrix(simple_vgg, test_dataloader, device, class_names)
+    utils.compute_confusion_matrix(simple_vgg, test_dataloader, device, class_names, save_dir=results_dir)
     
     print("Computing per-class accuracy...")
     utils.per_class_accuracy(simple_vgg, test_dataloader, device, class_names)
@@ -86,36 +86,24 @@ def main():
     test_loss, test_acc = engine.validate_step(simple_vgg, test_dataloader, loss_fn, device)
     print(f"Final Test Loss: {test_loss:.4f} | Final Test Accuracy: {test_acc:.4f}")
     
-    # Save logs
+    # Save metrics to JSON
     import json
-    log_data = {
+    metrics = {
         "experiment_name": args.experiment_name,
         "config": vars(args),
-        "results": results,
         "final_test_loss": test_loss,
-        "final_test_accuracy": test_acc
+        "final_test_accuracy": test_acc,
+        "train_loss_history": results["train_loss"],
+        "train_acc_history": results["train_acc"],
+        "val_loss_history": results["val_loss"],
+        "val_acc_history": results["val_acc"]
     }
     
-    os.makedirs("results", exist_ok=True)
-    log_file_path = os.path.join("results", "logs.json")
-    
-    # Append to existing logs if file exists, else create new list
-    if os.path.exists(log_file_path):
-        try:
-            with open(log_file_path, "r") as f:
-                logs = json.load(f)
-                if not isinstance(logs, list):
-                    logs = [logs]
-        except json.JSONDecodeError:
-            logs = []
-    else:
-        logs = []
+    metrics_path = os.path.join(results_dir, "metrics.json")
+    with open(metrics_path, "w") as f:
+        json.dump(metrics, f, indent=4)
         
-    logs.append(log_data)
-    
-    with open(log_file_path, "w") as f:
-        json.dump(logs, f, indent=4)
-    print(f"Logs saved to {log_file_path}")
+    print(f"Metrics saved to {metrics_path}")
 
 if __name__ == "__main__":
     main()

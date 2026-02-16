@@ -26,7 +26,7 @@ def save_model(model: torch.nn.Module, target_dir: str, model_name: str):
     print(f"[INFO] Saving model to: {model_save_path}")
     torch.save(obj=model.state_dict(), f=model_save_path)
 
-def plot_loss_curves(results: dict):
+def plot_loss_curves(results: dict, save_dir: str = "results"):
     """Plots training curves of a results dictionary."""
     loss = results['train_loss']
     test_loss = results['val_loss']
@@ -54,12 +54,12 @@ def plot_loss_curves(results: dict):
     plt.xlabel('Epochs')
     plt.legend()
     
-    save_path = Path("results/loss_curves.png")
+    save_path = Path(save_dir) / "loss_curves.png"
     save_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(save_path)
     plt.close()
 
-def compute_confusion_matrix(model, dataloader, device, class_names):
+def compute_confusion_matrix(model, dataloader, device, class_names, save_dir: str = "results"):
     """Computes and plots a confusion matrix."""
     y_preds = []
     y_true = []
@@ -83,7 +83,7 @@ def compute_confusion_matrix(model, dataloader, device, class_names):
     plt.xlabel('Predicted')
     plt.ylabel('True')
     plt.title('Confusion Matrix')
-    save_path = Path("results/confusion_matrix.png")
+    save_path = Path(save_dir) / "confusion_matrix.png"
     save_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(save_path)
     plt.close()
