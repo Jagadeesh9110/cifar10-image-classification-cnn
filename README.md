@@ -95,18 +95,21 @@ python src/train.py --epochs 50 --dropout 0.5 --optimizer sgd --experiment_name 
 
 ## Results
 
-| Experiment | Optimizer | Dropout | Test Accuracy |
-| :--- | :--- | :--- | :--- |
-| **Baseline (No Dropout)** | AdamW | 0.0 | ~85.0% |
-| **Regularized (Dropout)** | AdamW | 0.5 | **~89.0%** |
-| **SGD Variant** | SGD | 0.5 | ~86.5% |
+### Training & Validation Curves
+![Loss Curves](results/exp_dropout/loss_curves.png)
 
-*Note: Results obtained after training for 50 epochs on GPU.*
+### Confusion Matrix
+![Confusion Matrix](results/exp_dropout/confusion_matrix.png)
 
-## Metrics
-After training, the script automatically generates:
--   `loss_curves.png`: Training/Validation Loss and Accuracy over epochs.
--   `confusion_matrix.png`: A heatmap of prediction performance across all 10 classes.
+### Final Metrics
+
+- **Test Accuracy:** 88.9%
+- **Optimizer:** AdamW
+- **Dropout:** 0.5
+- **Epochs:** 50
+- **Model:** SimpleVGG
+
+*Note: The above metrics are from a representative run. Your results may vary slightly due to randomness.*
 
 ## License
 MIT
