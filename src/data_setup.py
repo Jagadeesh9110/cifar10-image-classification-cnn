@@ -4,7 +4,7 @@ import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split
 
-NUM_WORKERS = os.cpu_count()
+NUM_WORKERS = 2
 
 def get_dataloaders(batch_size: int, valid_split: float = 0.1, num_workers: int = NUM_WORKERS):
     """

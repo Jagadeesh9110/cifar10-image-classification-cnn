@@ -95,7 +95,20 @@ python src/train.py --epochs 50 --dropout 0.5 --optimizer sgd --experiment_name 
 
 ## Results
 
-### Training & Validation Curves
+## Results
+
+### Final Experiment Results (CPU Run)
+
+**Configuration:**
+- **Epochs:** 10
+- **Batch Size:** 64
+- **Optimizer:** AdamW
+- **Dropout:** 0.5
+- **Device:** CPU
+
+**Final Test Accuracy:** **87.25%**
+
+### Loss Curves
 ![Loss Curves](results/exp_dropout/loss_curves.png)
 
 ### Confusion Matrix
@@ -103,13 +116,16 @@ python src/train.py --epochs 50 --dropout 0.5 --optimizer sgd --experiment_name 
 
 ### Final Metrics
 
-- **Test Accuracy:** 88.9%
-- **Optimizer:** AdamW
-- **Dropout:** 0.5
-- **Epochs:** 50
-- **Model:** SimpleVGG
+- **Test Loss:** 0.3803
+- **Test Accuracy:** 87.25%
+- **Per-Class Accuracy:**
+    - Automobile: 95.1%
+    - Ship: 94.0%
+    - Truck: 92.5%
+    - Airplane: 91.6%
+    - Frog: 90.4%
 
-*Note: The above metrics are from a representative run. Your results may vary slightly due to randomness.*
+*Note: Results obtained after training for 10 epochs on CPU.*
 
 ## License
 MIT
