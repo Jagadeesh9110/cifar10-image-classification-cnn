@@ -54,7 +54,9 @@ def plot_loss_curves(results: dict):
     plt.xlabel('Epochs')
     plt.legend()
     
-    plt.savefig("loss_curves.png")
+    save_path = Path("results/loss_curves.png")
+    save_path.parent.mkdir(parents=True, exist_ok=True)
+    plt.savefig(save_path)
     plt.close()
 
 def compute_confusion_matrix(model, dataloader, device, class_names):
@@ -81,7 +83,9 @@ def compute_confusion_matrix(model, dataloader, device, class_names):
     plt.xlabel('Predicted')
     plt.ylabel('True')
     plt.title('Confusion Matrix')
-    plt.savefig("confusion_matrix.png")
+    save_path = Path("results/confusion_matrix.png")
+    save_path.parent.mkdir(parents=True, exist_ok=True)
+    plt.savefig(save_path)
     plt.close()
 
 def per_class_accuracy(model, dataloader, device, class_names):

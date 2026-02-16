@@ -52,6 +52,11 @@ def main():
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs)
     
     # 4. Training
+    # Create experiment directory
+    experiment_dir = os.path.join("experiments", args.experiment_name)
+    os.makedirs(experiment_dir, exist_ok=True)
+    
+    # 4. Training
     print(f"Starting training for {args.epochs} epochs...")
     results = engine.train_model(
         model=simple_vgg,
@@ -60,7 +65,7 @@ def main():
         loss_fn=loss_fn,
         optimizer=optimizer,
         scheduler=scheduler,
-        output_path=f"{args.experiment_name}.pth",
+        output_path=os.path.join(experiment_dir, "model.pth"),
         epochs=args.epochs,
         device=device,
         early_stopping_patience=5
@@ -80,6 +85,37 @@ def main():
     print("Evaluating on test set...")
     test_loss, test_acc = engine.validate_step(simple_vgg, test_dataloader, loss_fn, device)
     print(f"Final Test Loss: {test_loss:.4f} | Final Test Accuracy: {test_acc:.4f}")
+    
+    # Save logs
+    import json
+    log_data = {
+        "experiment_name": args.experiment_name,
+        "config": vars(args),
+        "results": results,
+        "final_test_loss": test_loss,
+        "final_test_accuracy": test_acc
+    }
+    
+    os.makedirs("results", exist_ok=True)
+    log_file_path = os.path.join("results", "logs.json")
+    
+    # Append to existing logs if file exists, else create new list
+    if os.path.exists(log_file_path):
+        try:
+            with open(log_file_path, "r") as f:
+                logs = json.load(f)
+                if not isinstance(logs, list):
+                    logs = [logs]
+        except json.JSONDecodeError:
+            logs = []
+    else:
+        logs = []
+        
+    logs.append(log_data)
+    
+    with open(log_file_path, "w") as f:
+        json.dump(logs, f, indent=4)
+    print(f"Logs saved to {log_file_path}")
 
 if __name__ == "__main__":
     main()

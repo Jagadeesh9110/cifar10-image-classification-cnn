@@ -42,15 +42,17 @@ The model uses a VGG-inspired design with 3 main convolutional blocks followed b
     -   `Linear` (128 -> 10)
 
 ## Project Structure
-
 ```bash
-├── data_setup.py    # Data loading, splitting, and transformations
-├── engine.py        # Training and evaluation loops, EarlyStopping
-├── model.py         # SimpleVGG class definition
-├── train.py         # Main entry point for training and experiments
-├── utils.py         # Utility functions (plotting, metrics, seed)
-├── requirements.txt # Project dependencies
-└── README.md        # Project documentation
+├── src/
+│   ├── data_setup.py    # Data loading, splitting, and transformations
+│   ├── engine.py        # Training and evaluation loops, EarlyStopping
+│   ├── model.py         # SimpleVGG class definition
+│   ├── train.py         # Main entry point for training and experiments
+│   └── utils.py         # Utility functions (plotting, metrics, seed)
+├── experiments/         # Directory for model checkpoints per experiment
+├── results/             # Directory for visualizations and logs
+├── requirements.txt     # Project dependencies
+└── README.md            # Project documentation
 ```
 
 ## Setup & Installation
@@ -63,7 +65,7 @@ The model uses a VGG-inspired design with 3 main convolutional blocks followed b
 
 2.  **Install dependencies:**
     ```bash
-    pip install torch torchvision tqdm matplotlib seaborn scikit-learn
+    pip install -r requirements.txt
     ```
 
 ## Usage
@@ -71,7 +73,7 @@ The model uses a VGG-inspired design with 3 main convolutional blocks followed b
 ### Train the Model
 To train the model with default settings (20 epochs, AdamW, Dropout 0.5):
 ```bash
-python train.py --epochs 20 --batch_size 64 --experiment_name my_model
+python src/train.py --epochs 20 --batch_size 64 --experiment_name my_model
 ```
 
 ### Run Experiments
@@ -79,17 +81,17 @@ You can easily replicate the experimental results by running the following comma
 
 **Experiment 1: No Dropout**
 ```bash
-python train.py --epochs 50 --dropout 0.0 --experiment_name exp_no_dropout
+python src/train.py --epochs 50 --dropout 0.0 --experiment_name exp_no_dropout
 ```
 
 **Experiment 2: With Dropout (0.5)**
 ```bash
-python train.py --epochs 50 --dropout 0.5 --experiment_name exp_dropout
+python src/train.py --epochs 50 --dropout 0.5 --experiment_name exp_dropout
 ```
 
 **Experiment 3: SGD Optimizer**
 ```bash
-python train.py --epochs 50 --dropout 0.5 --optimizer sgd --experiment_name exp_sgd
+python src/train.py --epochs 50 --dropout 0.5 --optimizer sgd --experiment_name exp_sgd
 ```
 
 ## Results
