@@ -25,11 +25,15 @@ venv.bak/
 .idea/
 .vscode/
 
-# Verification artifacts
+# Project Artifacts to Ignore (Keep Repo Clean)
+experiments/
 verify_setup.py
 verify_model.pth
-*.png
 experiment.pth
+
+# Root level plots (should be in results/)
+loss_curves.png
+confusion_matrix.png
 
 # Jupyter Notebooks
 .ipynb_checkpoints

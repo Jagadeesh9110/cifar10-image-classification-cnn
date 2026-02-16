@@ -49,7 +49,6 @@ The model uses a VGG-inspired design with 3 main convolutional blocks followed b
 │   ├── model.py         # SimpleVGG class definition
 │   ├── train.py         # Main entry point for training and experiments
 │   └── utils.py         # Utility functions (plotting, metrics, seed)
-├── experiments/         # Directory for model checkpoints per experiment
 ├── results/             # Directory for visualizations and logs
 ├── requirements.txt     # Project dependencies
 └── README.md            # Project documentation
